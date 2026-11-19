@@ -140,6 +140,8 @@ export default function HelixCanvas() {
       start();
     };
 
+    // Colours must exist before any frame can draw (observers may fire in any order).
+    readColors();
     const ro = new ResizeObserver(resize);
     ro.observe(canvas);
     // Pause when off-screen.
@@ -153,6 +155,9 @@ export default function HelixCanvas() {
       start();
     };
     scheme.addEventListener("change", onScheme);
+    // Day/night toggle sets data-theme on <html>.
+    const mo = new MutationObserver(onScheme);
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
     reduceMotion.addEventListener("change", start);
     document.addEventListener("visibilitychange", start);
 
@@ -160,6 +165,7 @@ export default function HelixCanvas() {
       cancelAnimationFrame(raf);
       ro.disconnect();
       io.disconnect();
+      mo.disconnect();
       scheme.removeEventListener("change", onScheme);
       reduceMotion.removeEventListener("change", start);
       document.removeEventListener("visibilitychange", start);

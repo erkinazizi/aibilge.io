@@ -35,8 +35,10 @@
   color-scheme: light;
 }
 
+/* Night tokens: used when the system is dark (unless the visitor chose day),
+   or whenever the visitor chose night via the header toggle. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --bg: #050b14;
     --bg-alt: #081322;
     --surface: rgba(14, 28, 46, 0.58);
@@ -60,6 +62,31 @@
     --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 16px 40px -16px rgba(0, 0, 0, 0.6);
     color-scheme: dark;
   }
+}
+
+:root[data-theme="dark"] {
+  --bg: #050b14;
+  --bg-alt: #081322;
+  --surface: rgba(14, 28, 46, 0.58);
+  --surface-solid: #0d1a2b;
+  --border: rgba(148, 190, 230, 0.12);
+  --border-strong: rgba(148, 190, 230, 0.24);
+  --text: #e6f0f8;
+  --muted: #97abbf;
+  --primary: #38bdf8;
+  --primary-hover: #7dd3fc;
+  --on-primary: #04121f;
+  --accent: #34d399;
+  --danger: #fca5a5;
+  --glow-1: rgba(56, 189, 248, 0.16);
+  --glow-2: rgba(52, 211, 153, 0.1);
+  --helix-strand: #9cc9ee;
+  --base-a: #34d399;
+  --base-t: #f87171;
+  --base-g: #fbbf24;
+  --base-c: #38bdf8;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 16px 40px -16px rgba(0, 0, 0, 0.6);
+    color-scheme: dark;
 }
 
 /* =========================================================
@@ -235,6 +262,64 @@ h3 {
 }
 .btn-block {
   width: 100%;
+}
+
+/* Day / night toggle */
+.theme-toggle {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition:
+    border-color var(--dur-fast) ease,
+    background-color var(--dur-fast) ease,
+    transform var(--dur-fast) ease;
+}
+.theme-toggle:hover {
+  border-color: var(--primary);
+}
+.theme-toggle:active {
+  transform: scale(0.94);
+}
+.theme-toggle svg {
+  grid-area: 1 / 1;
+  transition:
+    opacity var(--dur) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out);
+}
+/* Day: show the moon (switch to night). Night: show the sun (switch to day). */
+.theme-toggle .icon-sun {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.6);
+}
+:root[data-theme="dark"] .theme-toggle .icon-sun {
+  opacity: 1;
+  transform: none;
+}
+:root[data-theme="dark"] .theme-toggle .icon-moon {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.6);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .icon-sun {
+    opacity: 1;
+    transform: none;
+  }
+  :root:not([data-theme="light"]) .theme-toggle .icon-moon {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.6);
+  }
+}
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 /* =========================================================

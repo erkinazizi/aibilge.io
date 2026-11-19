@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { LogoMark } from "./icons";
+import ThemeToggle from "./ThemeToggle";
 
 const LINKS = [
   { href: "#problem", label: "The challenge" },
@@ -54,9 +55,12 @@ export default function Nav() {
             ))}
           </ul>
         </nav>
-        <a href="#access" className="btn btn-primary btn-sm">
-          Request early access
-        </a>
+        <div className="nav-actions">
+          <ThemeToggle />
+          <a href="#access" className="btn btn-primary btn-sm">
+            Request early access
+          </a>
+        </div>
       </div>
       <div className="scroll-progress" ref={bar} aria-hidden="true" />
     </header>
