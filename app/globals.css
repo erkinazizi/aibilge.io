@@ -35,6 +35,8 @@
   --dur: 280ms;
   --dur-slow: 720ms;
   --gutter: clamp(16px, 4vw, 32px);
+  --font-sans: "IBM Plex Sans";
+  --font-mono: "IBM Plex Mono";
   color-scheme: light;
 }
 
