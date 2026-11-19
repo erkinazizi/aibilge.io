@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { LogoMark } from "./icons";
+import Logo from "./Logo";
 import ThemeToggle from "./ThemeToggle";
 
 const LINKS = [
@@ -41,10 +41,7 @@ export default function Nav() {
     <header className={`nav ${scrolled ? "scrolled" : ""}`}>
       <div className="container nav-inner">
         <a href="#top" className="brand" aria-label="Aibilge home">
-          <span className="brand-mark">
-            <LogoMark />
-          </span>
-          Aibilge
+          <Logo />
         </a>
         <nav aria-label="Primary">
           <ul className="nav-links">

@@ -14,14 +14,6 @@ const base: SVGProps<SVGSVGElement> = {
   focusable: false,
 };
 
-export const LogoMark = () => (
-  <svg {...base} viewBox="0 0 32 32" width={28} height={28}>
-    <path d="M9 4c0 6 14 6 14 12S9 22 9 28" strokeWidth={2.2} />
-    <path d="M23 4c0 6-14 6-14 12s14 6 14 12" strokeWidth={2.2} opacity={0.55} />
-    <path d="M11 8.5h10M11 23.5h10M13 16h6" strokeWidth={1.8} />
-  </svg>
-);
-
 export const IconRead = () => (
   <svg {...base}>
     <path d="M4 7V5a1 1 0 0 1 1-1h2M17 4h2a1 1 0 0 1 1 1v2M20 17v2a1 1 0 0 1-1 1h-2M7 20H5a1 1 0 0 1-1-1v-2" />

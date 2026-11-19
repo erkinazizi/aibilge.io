@@ -13,8 +13,8 @@ import {
   IconSwitch,
   IconTarget,
   IconVariant,
-  LogoMark,
 } from "@/components/icons";
+import Logo from "@/components/Logo";
 
 const STEPS = [
   {
@@ -238,10 +238,7 @@ export default function Home() {
       <footer className="footer">
         <div className="container footer-inner">
           <a href="#top" className="brand" aria-label="Aibilge, back to top">
-            <span className="brand-mark">
-              <LogoMark />
-            </span>
-            Aibilge
+            <Logo size={36} />
           </a>
           <p className="footer-tag">AI for the language of life.</p>
           <nav aria-label="Footer" className="footer-links">
