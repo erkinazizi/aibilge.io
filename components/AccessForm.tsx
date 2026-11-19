@@ -2,16 +2,9 @@
 
 import { useState, type FormEvent } from "react";
 import { IconArrow, IconCheck } from "./icons";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
-const ROLES = [
-  "Academic researcher",
-  "Clinician / clinical genomics",
-  "Biotech or pharma",
-  "Investor",
-  "Other",
-];
-
-export default function AccessForm() {
+export default function AccessForm({ t }: { t: Dictionary["access"]["form"] }) {
   const [error, setError] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "done">("idle");
 
@@ -21,12 +14,12 @@ export default function AccessForm() {
     const form = e.currentTarget;
     const email = form.elements.namedItem("email") as HTMLInputElement;
     if (!email.value.trim()) {
-      setError("Enter your email address so we can reach you.");
+      setError(t.errEmpty);
       email.focus();
       return;
     }
     if (!email.checkValidity()) {
-      setError("That email doesn't look right. Check it and try again, e.g. name@lab.org.");
+      setError(t.errInvalid);
       email.focus();
       return;
     }
@@ -42,8 +35,8 @@ export default function AccessForm() {
           <IconCheck />
         </span>
         <div>
-          <strong>You&apos;re on the list.</strong>
-          <p>We&apos;ll contact you when early access opens.</p>
+          <strong>{t.successTitle}</strong>
+          <p>{t.successBody}</p>
         </div>
       </div>
     );
@@ -52,13 +45,13 @@ export default function AccessForm() {
   return (
     <form className="access-form" onSubmit={onSubmit} noValidate>
       <div className="field">
-        <label htmlFor="email">Work email</label>
+        <label htmlFor="email">{t.emailLabel}</label>
         <input
           id="email"
           name="email"
           type="email"
           autoComplete="email"
-          placeholder="name@lab.org"
+          placeholder={t.emailPlaceholder}
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? "email-error" : undefined}
           onBlur={(e) => {
@@ -74,13 +67,13 @@ export default function AccessForm() {
       </div>
       <div className="field">
         <label htmlFor="role">
-          I&apos;m a… <span className="optional">(optional)</span>
+          {t.roleLabel} <span className="optional">{t.optional}</span>
         </label>
         <select id="role" name="role" defaultValue="">
           <option value="" disabled>
-            Select your field
+            {t.rolePlaceholder}
           </option>
-          {ROLES.map((r) => (
+          {t.roles.map((r) => (
             <option key={r}>{r}</option>
           ))}
         </select>
@@ -88,15 +81,15 @@ export default function AccessForm() {
       <button type="submit" className="btn btn-primary btn-block" disabled={status === "sending"}>
         {status === "sending" ? (
           <>
-            <span className="spinner" aria-hidden="true" /> Sending…
+            <span className="spinner" aria-hidden="true" /> {t.sending}
           </>
         ) : (
           <>
-            Request early access <IconArrow />
+            {t.submit} <IconArrow />
           </>
         )}
       </button>
-      <p className="form-hint">We&apos;ll only email you about Aibilge access. No spam.</p>
+      <p className="form-hint">{t.hint}</p>
     </form>
   );
 }

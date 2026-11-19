@@ -9,7 +9,7 @@ function currentTheme(): "light" | "dark" {
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
-export default function ThemeToggle() {
+export default function ThemeToggle({ label, title }: { label: string; title: string }) {
   const toggle = () => {
     const next = currentTheme() === "dark" ? "light" : "dark";
     document.documentElement.dataset.theme = next;
@@ -26,8 +26,8 @@ export default function ThemeToggle() {
       type="button"
       className="theme-toggle"
       onClick={toggle}
-      aria-label="Switch between day and night mode"
-      title="Day / night mode"
+      aria-label={label}
+      title={title}
     >
       <IconSun />
       <IconMoon />

@@ -1,36 +1,37 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
 type Kind = "a" | "t" | "g" | "c";
-type Segment = { t: string; label?: string; kind?: Kind };
+// `feature` indexes the translated labels in the dictionary.
+type Segment = { t: string; feature?: number; kind?: Kind };
 
 // Illustrative sequence with a few well-known regulatory "words".
 const SEGMENTS: Segment[] = [
   { t: "GGCCAGTTCAGGCTGACCTGGACC" },
-  { t: "TATAAAAG", label: "TATA box · core promoter", kind: "g" },
+  { t: "TATAAAAG", feature: 0, kind: "g" },
   { t: "CTCAGGTCCCAGCTGAGC" },
-  { t: "CACGTG", label: "E-box · TF binding motif", kind: "c" },
+  { t: "CACGTG", feature: 1, kind: "c" },
   { t: "AGGTTCGAGGACTTACCAGTC" },
-  { t: "CGCGGCGCCGCG", label: "CpG island · methylation", kind: "a" },
+  { t: "CGCGGCGCCGCG", feature: 2, kind: "a" },
   { t: "TTGACCAATGGCTCAGGAAGCC" },
-  { t: "GTAAGT", label: "5′ splice donor site", kind: "t" },
+  { t: "GTAAGT", feature: 3, kind: "t" },
   { t: "CCTGACTTCAGGCTTCCAGG" },
 ];
 
 // Precompute feature order and base-pair positions.
 let cursor = 0;
-let featureIdx = 0;
 const PARSED = SEGMENTS.map((s) => {
   const start = cursor + 1;
   cursor += s.t.length;
-  return { ...s, start, end: cursor, f: s.label ? featureIdx++ : -1 };
+  return { ...s, start, end: cursor, f: s.feature ?? -1 };
 });
-const FEATURES = PARSED.filter((s) => s.label);
+const FEATURES = PARSED.filter((s) => s.f >= 0);
 const STEP_MS = 1300;
 const HOLD_MS = 2600;
 
-export default function SequenceParser() {
+export default function SequenceParser({ t }: { t: Dictionary["parser"] }) {
   const ref = useRef<HTMLDivElement>(null);
   const [found, setFound] = useState(-1);
   const [visible, setVisible] = useState(false);
@@ -72,13 +73,13 @@ export default function SequenceParser() {
         <span className="mono seq-title">sequence.fa · {cursor} bp</span>
         <span className={`seq-state mono ${complete ? "done" : ""}`}>
           <span className="pulse" aria-hidden="true" />
-          {complete ? "4 elements annotated" : "Parsing…"}
+          {complete ? t.done : t.parsing}
         </span>
       </div>
 
-      <p className="seq mono" aria-label="Example DNA sequence with annotated regulatory elements">
+      <p className="seq mono" aria-label={t.aria}>
         {PARSED.map((s, i) =>
-          s.label ? (
+          s.f >= 0 ? (
             <mark key={i} className={`motif k-${s.kind} ${s.f <= found ? "on" : ""}`}>
               {s.t}
             </mark>
@@ -90,16 +91,16 @@ export default function SequenceParser() {
 
       <ol className="annot">
         {FEATURES.map((f) => (
-          <li key={f.label} className={f.f <= found ? "on" : ""}>
+          <li key={f.f} className={f.f <= found ? "on" : ""}>
             <span className={`swatch k-${f.kind}`} aria-hidden="true" />
-            <span className="annot-label">{f.label}</span>
+            <span className="annot-label">{t.features[f.f]}</span>
             <span className="annot-pos mono">
               {f.start}–{f.end}
             </span>
           </li>
         ))}
       </ol>
-      <p className="seq-note">Illustrative example. Not model output.</p>
+      <p className="seq-note">{t.note}</p>
     </div>
   );
 }

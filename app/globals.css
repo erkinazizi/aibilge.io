@@ -330,6 +330,40 @@ h3 {
   align-items: center;
   gap: 10px;
 }
+/* Language switcher */
+.lang-switch {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+}
+.lang-switch a {
+  display: inline-grid;
+  place-items: center;
+  min-width: 40px;
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  transition:
+    color var(--dur-fast) ease,
+    background-color var(--dur-fast) ease;
+}
+.lang-switch a:hover {
+  color: var(--text);
+}
+.lang-switch a[aria-current="true"] {
+  color: var(--on-primary);
+  background: var(--primary);
+}
+.counter-unit {
+  font-size: 0.5em;
+  letter-spacing: -0.01em;
+}
 
 /* =========================================================
    Nav
@@ -1050,9 +1084,9 @@ h3 {
   .apps {
     grid-template-columns: 1fr;
   }
-  .nav .btn-sm {
-    padding: 0 12px;
-    font-size: 13.5px;
+  /* Hero already shows the CTA; keep the header to logo, language and theme. */
+  .nav-cta {
+    display: none;
   }
   .hero-ctas .btn {
     width: 100%;

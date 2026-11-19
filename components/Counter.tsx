@@ -7,13 +7,17 @@ export default function Counter({
   decimals = 0,
   prefix = "",
   suffix = "",
+  unit = "",
   label,
+  locale = "en-US",
 }: {
   value: number;
   decimals?: number;
   prefix?: string;
   suffix?: string;
+  unit?: string; // word unit shown smaller, e.g. "milyar"
   label: string; // full spoken value for screen readers
+  locale?: string;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const [n, setN] = useState(0);
@@ -52,11 +56,12 @@ export default function Counter({
       <span className="sr-only">{label}</span>
       <span aria-hidden="true">
         {prefix}
-        {n.toLocaleString("en-US", {
+        {n.toLocaleString(locale, {
           minimumFractionDigits: decimals,
           maximumFractionDigits: decimals,
         })}
         {suffix}
+        {unit && <span className="counter-unit"> {unit}</span>}
       </span>
     </span>
   );

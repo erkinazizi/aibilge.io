@@ -3,15 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import Logo from "./Logo";
 import ThemeToggle from "./ThemeToggle";
+import LanguageSwitcher from "./LanguageSwitcher";
+import type { Locale } from "@/lib/i18n/config";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
-const LINKS = [
-  { href: "#problem", label: "The challenge" },
-  { href: "#grammar", label: "Genome grammar" },
-  { href: "#approach", label: "Approach" },
-  { href: "#applications", label: "Applications" },
-];
-
-export default function Nav() {
+export default function Nav({ t, lang }: { t: Dictionary["nav"]; lang: Locale }) {
   const [scrolled, setScrolled] = useState(false);
   const bar = useRef<HTMLDivElement>(null);
 
@@ -40,12 +36,12 @@ export default function Nav() {
   return (
     <header className={`nav ${scrolled ? "scrolled" : ""}`}>
       <div className="container nav-inner">
-        <a href="#top" className="brand" aria-label="Aibilge home">
+        <a href="#top" className="brand" aria-label={t.home}>
           <Logo />
         </a>
-        <nav aria-label="Primary">
+        <nav aria-label={t.primary}>
           <ul className="nav-links">
-            {LINKS.map((l) => (
+            {t.links.map((l) => (
               <li key={l.href}>
                 <a href={l.href}>{l.label}</a>
               </li>
@@ -53,9 +49,10 @@ export default function Nav() {
           </ul>
         </nav>
         <div className="nav-actions">
-          <ThemeToggle />
-          <a href="#access" className="btn btn-primary btn-sm">
-            Request early access
+          <LanguageSwitcher lang={lang} label={t.language} />
+          <ThemeToggle label={t.theme} title={t.themeTitle} />
+          <a href="#access" className="btn btn-primary btn-sm nav-cta">
+            {t.cta}
           </a>
         </div>
       </div>
